@@ -45,10 +45,10 @@ Upgrade Pad:
 
 | Laag        | Technologie                          |
 |-------------|--------------------------------------|
-| Backend     | Java 21, Spring Boot 3.5, Spring AI  |
+| Backend     | Java 21, Spring Boot 4.1, Spring AI  |
 | AI          | OpenAI GPT-4o via Spring AI          |
 | Database    | PostgreSQL 16 + Flyway migrations    |
-| Frontend    | Angular 19, Signals, Material        |
+| Frontend    | Angular 22, Signals, Material        |
 | Observability | OpenTelemetry + Jaeger             |
 | CI/CD       | GitHub Actions + Dependabot          |
 | Container   | Docker Compose, multi-stage builds   |
