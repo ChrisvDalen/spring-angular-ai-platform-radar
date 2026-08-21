@@ -76,12 +76,18 @@ jobs:
           cache: maven
 
       - name: OWASP Dependency Check
+        if: ${{ secrets.NVD_API_KEY != '' }}
         run: |
           mvn org.owasp:dependency-check-maven:13.0.0:check \
+            -DnvdApiKey=${{ secrets.NVD_API_KEY }} \
             -DfailBuildOnCVSS=9 \
             -DskipTestScope=true \
             -B
         working-directory: backend
+
+      - name: Note unavailable NVD credentials
+        if: ${{ secrets.NVD_API_KEY == '' }}
+        run: echo "NVD_API_KEY is not configured; Trivy remains the blocking dependency scan."
 
       - name: Trivy container scan
         uses: aquasecurity/trivy-action@0.35.0
@@ -129,6 +135,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Build backend image
         uses: docker/build-push-action@v6
