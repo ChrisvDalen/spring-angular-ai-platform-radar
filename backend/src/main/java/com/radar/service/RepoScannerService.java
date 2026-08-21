@@ -152,7 +152,7 @@ public class RepoScannerService {
                     .severity(Severity.MEDIUM)
                     .title("Zone.js aanwezig — nog niet zoneless")
                     .description("De Angular applicatie gebruikt nog Zone.js voor change detection.")
-                    .recommendation("Migreer naar Angular Zoneless (provideExperimentalZonelessChangeDetection) " +
+                    .recommendation("Migreer naar Angular Zoneless (provideZonelessChangeDetection) " +
                             "voor betere performance en tree-shaking. Gebruik Signals voor reactieve state.")
                     .build());
         }
@@ -179,14 +179,13 @@ public class RepoScannerService {
         }
 
         int majorVersion = parseMajorVersion(result.angularVersion);
-        if (majorVersion > 0 && majorVersion < 17) {
+        if (majorVersion > 0 && majorVersion < 22) {
             result.findings.add(ScanFinding.builder()
                     .category(FindingCategory.FRONTEND)
                     .severity(Severity.HIGH)
                     .title("Angular versie verouderd: " + result.angularVersion)
-                    .description("Angular " + majorVersion + " is EOL. Moderne features zoals Signals, " +
-                            "Standalone Components en Zoneless zijn niet beschikbaar.")
-                    .recommendation("Upgrade stapsgewijs via ng update @angular/core @angular/cli. " +
+                    .description("Angular " + majorVersion + " ligt onder de actuele Angular 22-baseline.")
+                    .recommendation("Upgrade per major via ng update @angular/core @angular/cli tot Angular 22. " +
                             "Volg het Angular upgrade guide op update.angular.io.")
                     .build());
         }
@@ -197,23 +196,23 @@ public class RepoScannerService {
         int[] parts = parseVersion(result.springBootVersion);
         int major = parts[0], minor = parts[1];
 
-        if (major < 3) {
+        if (major < 4) {
             result.findings.add(ScanFinding.builder()
                     .category(FindingCategory.BACKEND)
                     .severity(Severity.HIGH)
                     .title("Spring Boot " + result.springBootVersion + " is EOL")
                     .description("Spring Boot " + major + ".x ontvangt geen security patches meer. " +
                             "Dit is een significant beveiligingsrisico voor productie-applicaties.")
-                    .recommendation("Upgrade naar Spring Boot 3.5.x. Migreer Jakarta EE namespaces " +
-                            "(javax.* → jakarta.*) en verwijder verouderde configuratie.")
+                    .recommendation("Upgrade naar Spring Boot 4.1. Migreer naar de modulaire starters, " +
+                            "Spring Framework 7 en de actuele Jakarta EE-baseline.")
                     .build());
-        } else if (major == 3 && minor < 4) {
+        } else if (major == 4 && minor < 1) {
             result.findings.add(ScanFinding.builder()
                     .category(FindingCategory.BACKEND)
                     .severity(Severity.MEDIUM)
                     .title("Spring Boot " + result.springBootVersion + " nadert EOL")
                     .description("Spring Boot " + major + "." + minor + " ontvangt binnenkort geen updates meer.")
-                    .recommendation("Plan upgrade naar Spring Boot 3.5.x. Controleer de Spring Boot support policy.")
+                    .recommendation("Plan de upgrade naar Spring Boot 4.1 en controleer de support policy.")
                     .build());
         }
     }
@@ -222,24 +221,23 @@ public class RepoScannerService {
         if (result.javaVersion == null) return;
         int major = Integer.parseInt(result.javaVersion.replaceAll("[^\\d].*", ""));
 
-        if (major < 17) {
+        if (major < 21) {
             result.findings.add(ScanFinding.builder()
                     .category(FindingCategory.BACKEND)
                     .severity(Severity.HIGH)
                     .title("Java " + result.javaVersion + " is EOL")
                     .description("Java " + major + " ontvangt geen security-updates meer. " +
-                            "Spring Boot 3.x vereist minimaal Java 17.")
-                    .recommendation("Upgrade naar Java 21 (LTS). Profiteer van Records, Pattern Matching, " +
-                            "Virtual Threads (Loom) en Sealed Classes.")
+                            "Deze versie ligt onder de moderne Java-baseline.")
+                    .recommendation("Upgrade naar Java 25 LTS en benut Records, Pattern Matching, " +
+                            "Virtual Threads en moderne concurrency-API's.")
                     .build());
-        } else if (major == 17) {
+        } else if (major < 25) {
             result.findings.add(ScanFinding.builder()
                     .category(FindingCategory.BACKEND)
                     .severity(Severity.LOW)
-                    .title("Java 17 — upgrade naar Java 21 aanbevolen")
-                    .description("Java 21 is de nieuwste LTS-release met Virtual Threads, " +
-                            "Sequenced Collections en verbeterde Pattern Matching.")
-                    .recommendation("Upgrade naar Java 21 voor betere performance en nieuwe taalfeatures.")
+                    .title("Java " + major + " — upgrade naar Java 25 aanbevolen")
+                    .description("Java 25 is de actuele LTS-baseline voor nieuwe platformontwikkeling.")
+                    .recommendation("Upgrade naar Java 25 en valideer de applicatie met de nieuwste toolchain.")
                     .build());
         }
     }

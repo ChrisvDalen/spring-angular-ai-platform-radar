@@ -11,14 +11,14 @@
 Project Health Score: 72/100
 ┌──────────────────────────────────────────────────┐
 │  Risico's gevonden:                              │
-│  [HIGH]   Spring Boot 3.4 nadert EOL             │
+│  [HIGH]   Spring Boot 3.5 ligt onder baseline    │
 │  [MEDIUM] Angular gebruikt nog Zone.js           │
 │  [MEDIUM] Geen OpenTelemetry geconfigureerd      │
 │  [LOW]    Dockerfile draait als root             │
 └──────────────────────────────────────────────────┘
 
 Aanbevolen acties:
-  1. Upgrade naar Spring Boot 3.5
+  1. Upgrade naar Spring Boot 4.1
   2. Migreer Angular naar Zoneless + Signals
   3. Voeg Dependabot toe
   4. Configureer OpenTelemetry tracing
@@ -32,10 +32,10 @@ observability en Angular performance-optimalisaties."
 
 Quick Wins (<2 uur):
   [HIGH]   Upgrade Spring Boot parent in pom.xml
-  [MEDIUM] Voeg provideExperimentalZonelessChangeDetection toe
+  [MEDIUM] Voeg provideZonelessChangeDetection toe
 
 Upgrade Pad:
-  [HIGH]   Migreer Java 17 → Java 21 (Virtual Threads)
+  [HIGH]   Migreer Java 21 → Java 25 (Virtual Threads)
   [MEDIUM] Implementeer OpenTelemetry distributed tracing
 ```
 
@@ -45,7 +45,7 @@ Upgrade Pad:
 
 | Laag        | Technologie                          |
 |-------------|--------------------------------------|
-| Backend     | Java 21, Spring Boot 4.1, Spring AI  |
+| Backend     | Java 25, Spring Boot 4.1, Spring AI 2.0 |
 | AI          | OpenAI GPT-4o via Spring AI          |
 | Database    | PostgreSQL 16 + Flyway migrations    |
 | Frontend    | Angular 22, Signals, Material        |
@@ -58,8 +58,8 @@ Upgrade Pad:
 ## Lokaal draaien
 
 ### Vereisten
-- Java 21+
-- Node 22+
+- Java 25+
+- Node 24+
 - Docker & Docker Compose
 - OpenAI API key (of een compatibele API)
 
@@ -83,7 +83,7 @@ Vervolgens:
 **Backend:**
 ```bash
 cd backend
-./mvnw spring-boot:run \
+mvn spring-boot:run \
   -Dspring-boot.run.profiles=dev \
   -DOPENAI_API_KEY=your-key \
   -DGITHUB_TOKEN=your-token
@@ -165,7 +165,7 @@ CREATE TABLE scan_finding (
 
 ```
 ┌─────────────────┐    ┌──────────────────────────────────┐
-│   Angular 19    │    │         Spring Boot 3.5          │
+│   Angular 22    │    │         Spring Boot 4.1          │
 │   (Signals)     │◄──►│                                  │
 │   (Zoneless)    │    │  ScanController                  │
 └─────────────────┘    │  ├── ScanService                 │
@@ -189,16 +189,10 @@ CREATE TABLE scan_finding (
 
 Dit project demonstreert:
 
-- **Java modernisering**: Java 21 Records, Virtual Threads, Pattern Matching
+- **Java modernisering**: Java 25 Records, Virtual Threads, Pattern Matching
 - **Spring Boot expertise**: Spring AI integratie, Spring Security, JPA
 - **Angular modernisering**: Signals, Zoneless, Standalone Components, OnPush
 - **DevOps**: multi-stage Docker, GitHub Actions, OWASP scanning, Dependabot
 - **Observability**: OpenTelemetry distributed tracing, Micrometer metrics
 - **Architectuur**: async scanning pipeline, polling-based status updates
 - **AI-integratie**: Spring AI ChatClient met structured prompts
-
----
-
-## Licentie
-
-MIT
