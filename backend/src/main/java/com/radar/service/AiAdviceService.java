@@ -67,20 +67,20 @@ public class AiAdviceService {
     public AdviceResponse generateAdvice(Scan scan) {
         String findingsSummary = formatFindings(scan.getFindings());
 
-        String prompt = new PromptTemplate(ADVICE_PROMPT).render(Map.of(
-                "repoName", nullSafe(scan.getRepoName()),
-                "healthScore", nullSafe(scan.getHealthScore()),
-                "javaVersion", nullSafe(scan.getJavaVersion()),
-                "springBootVersion", nullSafe(scan.getSpringBootVersion()),
-                "angularVersion", nullSafe(scan.getAngularVersion()),
-                "nodeVersion", nullSafe(scan.getNodeVersion()),
-                "zonelessEnabled", nullSafe(scan.getZonelessEnabled()),
-                "signalsUsed", nullSafe(scan.getSignalsUsed()),
-                "dockerPresent", nullSafe(scan.getDockerPresent()),
-                "githubActionsPresent", nullSafe(scan.getGithubActionsPresent()),
-                "openTelemetryPresent", nullSafe(scan.getOpenTelemetryPresent()),
-                "dependabotPresent", nullSafe(scan.getDependabotPresent()),
-                "findings", findingsSummary
+        String prompt = new PromptTemplate(ADVICE_PROMPT).render(Map.ofEntries(
+                Map.entry("repoName", nullSafe(scan.getRepoName())),
+                Map.entry("healthScore", nullSafe(scan.getHealthScore())),
+                Map.entry("javaVersion", nullSafe(scan.getJavaVersion())),
+                Map.entry("springBootVersion", nullSafe(scan.getSpringBootVersion())),
+                Map.entry("angularVersion", nullSafe(scan.getAngularVersion())),
+                Map.entry("nodeVersion", nullSafe(scan.getNodeVersion())),
+                Map.entry("zonelessEnabled", nullSafe(scan.getZonelessEnabled())),
+                Map.entry("signalsUsed", nullSafe(scan.getSignalsUsed())),
+                Map.entry("dockerPresent", nullSafe(scan.getDockerPresent())),
+                Map.entry("githubActionsPresent", nullSafe(scan.getGithubActionsPresent())),
+                Map.entry("openTelemetryPresent", nullSafe(scan.getOpenTelemetryPresent())),
+                Map.entry("dependabotPresent", nullSafe(scan.getDependabotPresent())),
+                Map.entry("findings", findingsSummary)
         ));
 
         log.info("Generating AI advice for scan {}", scan.getId());
