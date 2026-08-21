@@ -6,7 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DatePipe, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ScanService } from '../../core/services/scan.service';
 import { Scan, getHealthClass, getHealthLabel, FindingCategory } from '../../core/models/scan.model';
 
@@ -21,7 +21,6 @@ import { Scan, getHealthClass, getHealthLabel, FindingCategory } from '../../cor
     MatTabsModule,
     MatChipsModule,
     MatTooltipModule,
-    DatePipe,
     NgClass,
   ],
   template: `
@@ -137,7 +136,7 @@ import { Scan, getHealthClass, getHealthLabel, FindingCategory } from '../../cor
         }
 
         <!-- Findings -->
-        @if (scan()!.findings?.length) {
+        @if (scan()!.findings.length) {
           <div class="findings-section">
             <h3 class="section-title">
               Bevindingen

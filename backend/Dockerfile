@@ -1,15 +1,17 @@
 # Build stage
-FROM eclipse-temurin:21-jdk-alpine AS builder
+FROM maven:3.9.11-eclipse-temurin-25-alpine AS builder
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN apk add --no-cache maven && mvn package -DskipTests -q
+RUN mvn package -DskipTests -q
 
 # Runtime stage — minimal JRE image
-FROM eclipse-temurin:21-jre-alpine AS runtime
+FROM eclipse-temurin:25-jre-alpine AS runtime
 WORKDIR /app
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN apk add --no-cache curl \
+    && addgroup -S appgroup \
+    && adduser -S appuser -G appgroup
 USER appuser
 
 COPY --from=builder /app/target/*.jar app.jar

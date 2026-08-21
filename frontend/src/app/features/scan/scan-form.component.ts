@@ -86,11 +86,10 @@ const EXAMPLE_REPOS = [
             >
               @if (loading()) {
                 <mat-icon>hourglass_empty</mat-icon>
-                Scanning...
               } @else {
                 <mat-icon>radar</mat-icon>
-                Start Scan
               }
+              <span>{{ loading() ? 'Scanning...' : 'Start Scan' }}</span>
             </button>
           </div>
         </form>
