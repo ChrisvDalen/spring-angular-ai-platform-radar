@@ -6,8 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:prod": "ng build --configuration production",
-    "test": "ng test --watch=false",
-    "lint": "ng lint"
+    "test": "ng test --watch=false"
   },
   "dependencies": {
     "@angular/cdk": "^22.1.3",
