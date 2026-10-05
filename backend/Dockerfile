@@ -1,5 +1,5 @@
 # Build stage
-FROM maven:3.9.11-eclipse-temurin-25-alpine AS builder
+FROM maven:3-eclipse-temurin-24-alpine AS builder
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
